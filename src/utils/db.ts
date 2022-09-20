@@ -1,10 +1,10 @@
 import * as Sentry from '@sentry/node';
 import { Client, QueryResult } from 'pg';
-import { backendConfig } from './config';
+import backendConfig from './config';
 import logger from './logger';
 
 Sentry.init({
-  dsn: backendConfig.sentryDSN,
+  dsn: backendConfig.sentryDns,
   tracesSampleRate: 1.0,
 });
 
