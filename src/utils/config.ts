@@ -1,13 +1,3 @@
-// @ts-check
-require('dotenv').config();
-
-const backendConfig = {
-  wsProviderUrl: process.env.WS_PROVIDER_URL || 'ws://substrate-node:9944',
-
-  logLevel: process.env.LOG_LEVEL || 'info',
-  sentryDSN: process.env.SENTRY_DSN || '',
-};
-
 import 'dotenv/config';
 
 const toNumber = (defaultValue: number, value?: string): number => {

@@ -49,6 +49,7 @@ class NodeProvider {
     logger.info('Closing providers');
 
     for (let index = 0; index < this.providers.length; index += 1) {
+      await wait(6000);
       await this.providers[index].api.disconnect();
     }
 
