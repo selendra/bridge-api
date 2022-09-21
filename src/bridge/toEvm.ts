@@ -25,7 +25,7 @@ const saveToDB = async (
   const derivedBlock = await provider.api.derive.chain.getBlock(blockHash);
 
   const blockNumber = derivedBlock?.block.header.number.toNumber()? derivedBlock?.block.header.number.toNumber() : 0 ;
-  let timestamp = await provider.api.query.timestamp.now.at(blockHash);
+  const timestamp = new Date((await provider.api.query.timestamp.now.at(blockHash)).toJSON()).toUTCString()
 
   const data = [
     blockNumber,
@@ -34,7 +34,7 @@ const saveToDB = async (
     sender,
     recipient,
     chainId,
-    new Date(timestamp.toJSON()).toUTCString()
+    timestamp
   ];
 
   const sql = `INSERT INTO toEvmBridge (
@@ -55,15 +55,16 @@ const saveToDB = async (
     $7
   );`;
   try {
-    logger.info('Save bridge event to db')
     await dbParamQuery(client, sql, data);
   } catch (error){
     logger.error(error);
     Sentry.captureException(error); 
   }
+
+  return timestamp
 }
 
-export const toEvmBridge = async (
+export const toEvmBridge = (
     nodeProvider: NodeProviderType,
     client: Client,
     pairs: KeyringPair,
@@ -75,17 +76,24 @@ export const toEvmBridge = async (
     const provider = nodeProvider.getProvider();
     const transferAmount = new BN(amount * Math.pow(10, backendConfig.networkDecimal));
 
-    await provider.api.tx.bridgeTransfer
-      .transferNative(transferAmount, recipient, chainId)
-      .signAndSend(pairs, async ({ status }) => {
-        if (status.isInBlock || status.isFinalized) {
-          logger.info('Transaction in block')
-          const blockHash = JSON.parse(status.toString())['inBlock'];
-          await saveToDB(nodeProvider, client, blockHash, pairs.address, recipient, transferAmount, chainId);
-        }
+    Promise.resolve()
+      .then(async () => {
+        await provider.api.tx.bridgeTransfer
+          .transferNative(transferAmount, recipient, chainId)
+          .signAndSend(pairs, async ({ status }) => {
+            if (status.isInBlock || status.isFinalized) {
+              logger.info('Transaction in block')
+              const blockHash = JSON.parse(status.toString())['inBlock'];
+
+              logger.info('Save bridge event to db');
+              await saveToDB(nodeProvider, client, blockHash, pairs.address, recipient, transferAmount, chainId);
+            }
     });
+      })
   } catch (error) {
     logger.error(error);
     Sentry.captureException(error);   
   }
 }
+
+
