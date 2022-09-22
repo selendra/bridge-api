@@ -13,6 +13,7 @@ const contractPath = "../../contracts";
 export default {
   nodeUrls: process.env.NODE_PROVIDER_URLS ? JSON.parse(process.env.NODE_PROVIDER_URLS) as string[] : defaultNodeUrls,
   bridgeUrl: process.env.BRIDGE_URL || 'https://ropsten.infura.io/v3/78324f11f469479a9647bd6a75567001',
+  navtiveBridgeId: process.env.NATIVE_BRIDGE_ID || 1,
   bridgeId: process.env.BRIDGE_ID || 4,
   sentryDns: process.env.SENTRY_DNS || '',
   expectedBlockTime:  toNumber(6000, process.env.EXPECTED_BLOCK_TIME),
@@ -30,7 +31,7 @@ export default {
     Erc20Mintable: require(contractPath + "/ERC20Custom.json"),
   },
   constractAddress: {
-    Erc20Address : process.env.ERC20_ADDRESS || '0x21605f71845f372A9ed84253d2D024B7B10999f4',
+    Erc20Address : process.env.ERC20_ADDRESS || '0xa804a7a42b80E52289B9FEa7101a5ad7968bF6aF',
     Erc20HandlerAddress : process.env.ERC20_HANDLER_ADDRESS || '0x667459FAF38d3d7015D1e039C88bb81406EBF5a9',
     BridgeAddress: process.env.BRIDGE_ADDRESS || '0x7cd7005DA3ea21E5BB03A4E695c191F6E041FdA4',
   }

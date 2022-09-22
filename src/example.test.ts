@@ -4,7 +4,7 @@ import backConfig from './utils/config';
 import nodeProvider from './utils/nodeProvider';
 import { getClient } from './utils/db';
 import { toEvmBridge } from './bridge/toEvm';
-import { approve, getWallet } from './bridge/toSubstrate';
+import { approve, getWallet, fromEvmBridge } from './bridge/toSubstrate';
 import { ethers, Signer } from 'ethers';
 
 const testPairs = createTestPairs();
@@ -18,9 +18,10 @@ const testBridge = async () => {
 const testBridgeFrom = () => {
   const privateKey = "000000000000000000000000000000000000000000000000000000616c696365";
   const wallet = getWallet(privateKey);
-  const erc20Address = '0x21605f71845f372A9ed84253d2D024B7B10999f4';
   const recipient = '0x667459FAF38d3d7015D1e039C88bb81406EBF5a9';
-  approve(erc20Address, wallet, recipient, 10);
+
+  // approve(wallet, 1);
+  fromEvmBridge(wallet, recipient, 1);
 };
 
 Promise.resolve()
