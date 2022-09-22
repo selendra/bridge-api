@@ -60,8 +60,6 @@ const saveToDB = async (
     logger.error(error);
     Sentry.captureException(error); 
   }
-
-  return timestamp
 }
 
 export const toEvmBridge = (

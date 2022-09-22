@@ -1,3 +1,7 @@
+import { ethers } from 'ethers';
+import logger from './logger';
+import backendConfig from './config';
+
 export const wait = async (ms: number): Promise<void> => new Promise((res) => setTimeout(res, ms));
 
 export const max = (...args: number[]): number => {
@@ -25,3 +29,18 @@ export const promiseWithTimeout = <T>(
   // returns a race between timeout and the passed promise
   return Promise.race<T>([promise, timeout]);
 };
+
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export const waitForTx = async (provider: any, hash: string) => {
+  logger.info(`Waiting for tx: ${hash}...`)
+  while (!await provider.getTransactionReceipt(hash)) {
+      sleep(5000)
+  }
+}
+
+export const expandDecimals = (amount: number, decimals = backendConfig.networkDecimal) => {
+  return ethers.utils.parseUnits(String(amount), decimals);
+}
