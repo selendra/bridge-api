@@ -25,7 +25,7 @@ const saveToDB = async (
   const derivedBlock = await provider.api.derive.chain.getBlock(blockHash);
 
   const blockNumber = derivedBlock?.block.header.number.toNumber()? derivedBlock?.block.header.number.toNumber() : 0 ;
-  const timestamp = new Date((await provider.api.query.timestamp.now.at(blockHash)).toJSON()).toUTCString()
+  const timestamp = new Date((await provider.api.query.timestamp.now.at(blockHash)).toJSON()).toUTCString();
 
   const data = [
     blockNumber,

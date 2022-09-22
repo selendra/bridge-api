@@ -1,6 +1,13 @@
 import { ethers } from 'ethers';
 import logger from './logger';
 import backendConfig from './config';
+import { decodeAddress } from '@polkadot/util-crypto';
+import { u8aToHex } from '@polkadot/util';
+
+export const toHex = (address: string) => {
+  const publicKey = decodeAddress(address);
+  return u8aToHex(publicKey);
+}
 
 export const wait = async (ms: number): Promise<void> => new Promise((res) => setTimeout(res, ms));
 

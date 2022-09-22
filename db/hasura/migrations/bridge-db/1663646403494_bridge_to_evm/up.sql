@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS public.toEvmBridge (  
-  bridgeId SERIAL PRIMARY KEY,
+  transactionId SERIAL PRIMARY KEY,
   blockNumber BIGINT NOT NULL,
   blockHash TEXT NOT NULL,
   amount TEXT NOT NULL,

@@ -15,6 +15,7 @@ export default {
   bridgeUrl: process.env.BRIDGE_URL || 'https://ropsten.infura.io/v3/78324f11f469479a9647bd6a75567001',
   navtiveBridgeId: process.env.NATIVE_BRIDGE_ID || 1,
   bridgeId: process.env.BRIDGE_ID || 4,
+  bridgeNetework: process.env.BRIDGE_NETWORK || 'Ethereum Testnet',
   sentryDns: process.env.SENTRY_DNS || '',
   expectedBlockTime:  toNumber(6000, process.env.EXPECTED_BLOCK_TIME),
   networkDecimal:  toNumber(12, process.env.NETWORK_DECIMAL),
